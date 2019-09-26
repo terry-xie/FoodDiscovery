@@ -1,4 +1,5 @@
 const express = require("express");
+
 const v1 = express.Router();
 
 v1.use("/user", require("./user"));

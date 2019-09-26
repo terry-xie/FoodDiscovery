@@ -1,12 +1,13 @@
 const express = require("express");
-const router = express.Router({mergeParams: true});
 const generatorController = require("../../../../controllers/generatorController.js");
 
-router.get("/next", generatorController.next);
+const router = express.Router({ mergeParams: true });
+
+router.get("/next", generatorController.getNext);
 
 router.get("/", generatorController.getGenerator);
 
-//router.get("/:generatorId", generatorController.getGeneratorById);
+// router.get("/:generatorId", generatorController.getGeneratorById);
 
 router.post("/", generatorController.createGenerator);
 
