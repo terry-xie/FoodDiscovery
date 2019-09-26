@@ -31,14 +31,34 @@ async function validateRequest(req, res, next) {
   }
 }
 
-router.use("*", verifyRequestToken);
-router.use("/:userId", authorizationValidation);
-
 router.post("/", validateRequest, userController.createUser);
-router.get("/", userController.getUser);
-router.get("/:userId", userController.getUserById);
 
-router.use("/:userId/preference", require("./preference"));
-router.use("/:userId/generator", require("./generator"));
+router.get(
+  "/",
+  verifyRequestToken,
+  authorizationValidation,
+  userController.getUser
+);
+
+router.get(
+  "/:userId",
+  verifyRequestToken,
+  authorizationValidation,
+  userController.getUserById
+);
+
+router.use(
+  "/:userId/preference",
+  verifyRequestToken,
+  authorizationValidation,
+  require("./preference")
+);
+
+router.use(
+  "/:userId/generator",
+  verifyRequestToken,
+  authorizationValidation,
+  require("./generator")
+);
 
 module.exports = router;
