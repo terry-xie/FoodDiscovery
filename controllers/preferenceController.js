@@ -7,7 +7,7 @@ async function createPreference(req, res, next) {
       distance: req.body.distance,
       price: req.body.price,
       location: req.body.location,
-      userId: req.params.userId
+      userId: req.params.userId || res.locals.userId
     });
     return res.status(201).send(preference);
   } catch (err) {
@@ -18,7 +18,9 @@ async function createPreference(req, res, next) {
 
 async function getPreference(req, res, next) {
   try {
-    const preferences = await Preference.find({});
+    const preferences = await Preference.find({
+      userId: req.params.userId || res.locals.userId
+    });
     return res.status(200).send(preferences);
   } catch (err) {
     console.log("Error in GET ../preference");

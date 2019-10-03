@@ -12,7 +12,7 @@ async function createGenerator(req, res, next) {
     const generator = await Generator.create({
       limit: req.body.limit,
       offset: req.body.offset,
-      userId: req.params.userId
+      userId: req.params.userId || res.locals.userId
     });
     return res.status(201).send(generator);
   } catch (err) {
@@ -23,7 +23,9 @@ async function createGenerator(req, res, next) {
 
 async function getGenerator(req, res, next) {
   try {
-    const generators = await Generator.find({ userId: req.params.userId });
+    const generators = await Generator.find({
+      userId: req.params.userId || res.locals.userId
+    });
     return res.status(200).send(generators);
   } catch (err) {
     console.log("Error in GET ../generator");
@@ -61,7 +63,7 @@ async function updateGenerator(req, res, next) {
 async function getNext(req, res, next) {
   try {
     const { rating, distance, price, location } = await Preference.findOne({
-      userId: req.params.userId
+      userId: req.params.userId || res.locals.userId
     });
     // TODO: Add defaults for rating, distance and price. Require location
     const { limit } = (await Generator.findOne({
