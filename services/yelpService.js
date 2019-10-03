@@ -34,7 +34,15 @@ class YelpService {
         }
       });
 
-      return result.data;
+      return result.data.businesses.map(x => {
+        return {
+          rating: x.rating,
+          price: x.price,
+          name: x.name,
+          location: x.location,
+          categories: x.categories
+        };
+      });
     } catch (err) {} // TODO: handle error
   }
 }

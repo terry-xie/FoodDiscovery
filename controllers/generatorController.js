@@ -16,7 +16,6 @@ async function createGenerator(req, res, next) {
     });
     return res.status(201).send(generator);
   } catch (err) {
-    console.log("Error in POST ../generator");
     return next(err);
   }
 }
@@ -28,7 +27,6 @@ async function getGenerator(req, res, next) {
     });
     return res.status(200).send(generators);
   } catch (err) {
-    console.log("Error in GET ../generator");
     return next(err);
   }
 }
@@ -55,7 +53,6 @@ async function updateGenerator(req, res, next) {
     );
     return res.status(200).send();
   } catch (err) {
-    console.log("Error in UPDATE ../generator");
     return next(err);
   }
 }
@@ -96,16 +93,15 @@ async function getNext(req, res, next) {
     else {
       const yelp = new YelpService();
       yelp.initialize();
-      result = await yelp.businessSearch(query); // TODO: filter result
+      result = await yelp.businessSearch(query);
       // cache result and increment page #
       if (result) {
         await cache.setAsync(searchKey, JSON.stringify(result)); // TODO: add expiration
         await cache.incrAsync(pageKey); // TODO: add expiration
       }
     }
-    res.status(200).send(result);
+    res.status(200).json({ result });
   } catch (err) {
-    console.log("Error in generatorController's next()");
     next(err);
   }
 }
