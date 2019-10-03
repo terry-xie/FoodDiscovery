@@ -12,7 +12,6 @@ async function createUser(req, res, next) {
     });
     return res.status(201).send({ username: req.body.username });
   } catch (err) {
-    console.log("Error in POST /user");
     return next(err);
   }
 }
@@ -20,9 +19,9 @@ async function createUser(req, res, next) {
 async function getUser(req, res, next) {
   try {
     const users = await User.find({ _id: res.locals.userId });
+    // TODO: Don't return password
     return res.status(200).send(users);
   } catch (err) {
-    console.log("Error in GET /user");
     return next(err);
   }
 }
@@ -32,7 +31,6 @@ async function getUserById(req, res, next) {
     const user = await User.findById(req.params.userId);
     return res.status(200).send(user);
   } catch (err) {
-    console.log("Error in GET /user/:id");
     return next(err);
   }
 }

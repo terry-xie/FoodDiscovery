@@ -24,7 +24,6 @@ async function validateRequest(req, res, next) {
     await joi.validate(req.body, schema, { abortEarly: false });
     return next();
   } catch (err) {
-    console.log("Error validating");
     return res
       .status(400)
       .send({ Error: err.details.map(x => x.message).join(",") });
@@ -33,6 +32,7 @@ async function validateRequest(req, res, next) {
 
 router.post("/", validateRequest, userController.createUser);
 
+// Fix this route. It requires a userId in param right now.
 router.get(
   "/",
   verifyRequestToken,
