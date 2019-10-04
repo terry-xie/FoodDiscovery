@@ -21,7 +21,6 @@ async function validateRequest(req, res, next) {
   try {
     await joi.validate(req.body, schema, { abortEarly: false });
   } catch (err) {
-    console.log("Error validating");
     return res
       .status(400)
       .send({ Error: err.details.map(x => x.message).join(",") });

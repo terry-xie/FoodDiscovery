@@ -11,7 +11,6 @@ async function verifyRequestToken(req, res, next) {
   try {
     payload = await verifyToken(token, process.env.APP_PRIVATEKEY);
   } catch (err) {
-    console.log("Error verifying token");
     return res.status(400).send({ Error: "Invalid Token" });
   }
   res.locals.userId = payload.sub;
