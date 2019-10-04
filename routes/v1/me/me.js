@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get("/", verifyRequestToken, userController.getUser);
 
+router.patch("/", verifyRequestToken, userController.updateUserById);
+
 router.use("/generator", verifyRequestToken, require("../user/generator"));
 
 router.use("/preference", verifyRequestToken, require("../user/preference"));
