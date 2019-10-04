@@ -9,6 +9,8 @@ router.get("/", preferenceController.getPreference);
 
 router.get("/:preferenceId", preferenceController.getPreferenceById);
 
+router.patch("/:preferenceId", preferenceController.updatePreferenceById);
+
 // TODO: add validation
 
 module.exports = router;

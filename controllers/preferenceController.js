@@ -11,7 +11,6 @@ async function createPreference(req, res, next) {
     });
     return res.status(201).send(preference);
   } catch (err) {
-    console.log("Error in POST ../preference");
     return next(err);
   }
 }
@@ -23,7 +22,6 @@ async function getPreference(req, res, next) {
     });
     return res.status(200).send(preferences);
   } catch (err) {
-    console.log("Error in GET ../preference");
     return next(err);
   }
 }
@@ -33,15 +31,33 @@ async function getPreferenceById(req, res, next) {
     const preference = await Preference.findById(req.params.preferenceId);
     return res.status(200).send(preference);
   } catch (err) {
-    console.log("Error in GET ../preference/:preferenceId");
     return next(err);
   }
 }
 
-// TODO: create update method
+async function updatePreferenceById(req, res, next) {
+  try {
+    const preference = await Preference.findByIdAndUpdate(
+      req.params.preferenceId,
+      {
+        $set: {
+          ...(req.body.rating && { rating: req.body.rating }),
+          ...(req.body.distance && { distance: req.body.distance }),
+          ...(req.body.price && { price: req.body.price }),
+          ...(req.body.location && { location: req.body.location })
+        }
+      },
+      { new: true }
+    );
+    return res.status(200).send(preference);
+  } catch (err) {
+    return next(err);
+  }
+}
 
 module.exports = {
   getPreference,
   getPreferenceById,
-  createPreference
+  createPreference,
+  updatePreferenceById
 };
