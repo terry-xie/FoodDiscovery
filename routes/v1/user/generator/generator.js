@@ -7,7 +7,7 @@ router.get("/next", generatorController.getNext);
 
 router.get("/", generatorController.getGenerator);
 
-// router.get("/:generatorId", generatorController.getGeneratorById);
+// TODO: update generator route
 
 router.post("/", generatorController.createGenerator);
 

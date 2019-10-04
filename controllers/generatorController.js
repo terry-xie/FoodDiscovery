@@ -31,38 +31,27 @@ async function getGenerator(req, res, next) {
   }
 }
 
-// async function getGeneratorById(req, res, next){
-//     try {
-// 		let generator = await Generator.findById(req.params.generatorId);   //need to search based on userid
-// 		return res.status(200).send(generator);
-// 	}
-// 	catch(err){
-// 		console.log("Error in GET ../generator/:generatorId");
-// 		next(err);
-// 	}
-// };
-
-async function updateGenerator(req, res, next) {
-  try {
-    await Generator.findOneAndUpdate(
-      { userId: req.params.userId },
-      {
-        ...(req.params.limit && { limit: req.params.limit }),
-        ...(req.params.offset && { offset: req.params.offset })
-      }
-    );
-    return res.status(200).send();
-  } catch (err) {
-    return next(err);
-  }
-}
+// async function updateGenerator(req, res, next) {
+//   try {
+//     const generator = await Generator.findOneAndUpdate(
+//       { userId: req.params.userId || res.locals.userId },
+//       {
+//         ...(req.params.limit && { limit: req.params.limit }),
+//         ...(req.params.offset && { offset: req.params.offset })
+//       },
+//       { new: true }
+//     );
+//     return res.status(200).send(generator);
+//   } catch (err) {
+//     return next(err);
+//   }
+// }
 
 async function getNext(req, res, next) {
   try {
     const { rating, distance, price, location } = await Preference.findOne({
       userId: req.params.userId || res.locals.userId
     });
-    // TODO: Add defaults for rating, distance and price. Require location
     const { limit } = (await Generator.findOne({
       userId: req.params.userId
     })) || { limit: 1 };

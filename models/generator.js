@@ -5,7 +5,6 @@ const Generator = mongoose.model(
   new mongoose.Schema({
     limit: { type: Number, default: 1 },
     userId: mongoose.Types.ObjectId
-    // TODO: add id reference to user
   })
 );
 
