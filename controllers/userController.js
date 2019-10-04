@@ -35,10 +35,24 @@ async function getUserById(req, res, next) {
   }
 }
 
-// TODO: add an update method
+async function updateUserById(req, res, next) {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.userId || res.locals.userId,
+      {
+        ...(req.body.password && { password: req.body.password })
+      },
+      { new: true }
+    );
+    return res.status(200).send(user);
+  } catch (err) {
+    return next(err);
+  }
+}
 
 module.exports = {
   getUser,
   getUserById,
-  createUser
+  createUser,
+  updateUserById
 };

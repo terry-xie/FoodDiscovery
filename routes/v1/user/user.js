@@ -32,19 +32,20 @@ async function validateRequest(req, res, next) {
 
 router.post("/", validateRequest, userController.createUser);
 
-// Fix this route. It requires a userId in param right now.
-router.get(
-  "/",
-  verifyRequestToken,
-  authorizationValidation,
-  userController.getUser
-);
+router.get("/", verifyRequestToken, userController.getUser);
 
 router.get(
   "/:userId",
   verifyRequestToken,
   authorizationValidation,
   userController.getUserById
+);
+
+router.patch(
+  "/:userId",
+  verifyRequestToken,
+  authorizationValidation,
+  userController.updateUserById
 );
 
 router.use(
