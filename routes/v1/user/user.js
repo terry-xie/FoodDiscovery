@@ -3,10 +3,11 @@ const joi = require("joi");
 const verifyRequestToken = require("../../../middleware/tokenValidation.js");
 const authorizationValidation = require("../../../middleware/authorizationValidation.js");
 const userController = require("../../../controllers/userController.js");
+const validateRequest = require("../../../validation/validation.js");
 
 const router = express.Router();
 
-const schema = joi.object().keys({
+const createUserSchema = joi.object().keys({
   username: joi
     .string()
     .alphanum()
@@ -19,18 +20,18 @@ const schema = joi.object().keys({
     .required()
 });
 
-async function validateRequest(req, res, next) {
-  try {
-    await joi.validate(req.body, schema, { abortEarly: false });
-    return next();
-  } catch (err) {
-    return res
-      .status(400)
-      .send({ Error: err.details.map(x => x.message).join(",") });
-  }
-}
+const updateUserSchema = joi.object().keys({
+  username: joi
+    .string()
+    .alphanum()
+    .min(8),
+  password: joi
+    .string()
+    .alphanum()
+    .min(8)
+});
 
-router.post("/", validateRequest, userController.createUser);
+router.post("/", validateRequest(createUserSchema), userController.createUser);
 
 router.get("/", verifyRequestToken, userController.getUser);
 
@@ -45,6 +46,7 @@ router.patch(
   "/:userId",
   verifyRequestToken,
   authorizationValidation,
+  validateRequest(updateUserSchema),
   userController.updateUserById
 );
 
