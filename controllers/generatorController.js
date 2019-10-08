@@ -11,7 +11,6 @@ async function createGenerator(req, res, next) {
   try {
     const generator = await Generator.create({
       limit: req.body.limit,
-      offset: req.body.offset,
       userId: req.params.userId || res.locals.userId
     });
     return res.status(201).send(generator);
