@@ -240,7 +240,7 @@ module.exports = {
     },
     "/me/generator/next": {
       get: {
-        tags: ["user"],
+        tags: ["me"],
         description: "Get next result from generator",
         security: [{ BearerAuth: [] }],
         responses: {
@@ -325,7 +325,15 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/User"
+                  type: "object",
+                  properties: {
+                    users: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/User"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -388,7 +396,7 @@ module.exports = {
         }
       }
     },
-    "/user/{id}": {
+    "/user/{userId}": {
       get: {
         tags: ["user"],
         description: "Get user by id",
@@ -396,7 +404,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
@@ -470,7 +478,7 @@ module.exports = {
         }
       }
     },
-    "/user/{id}/generator": {
+    "/user/{userId}/generator": {
       get: {
         tags: ["user"],
         description: "Get generator",
@@ -478,7 +486,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
@@ -563,7 +571,7 @@ module.exports = {
         }
       }
     },
-    "/user/{id}/generator/next": {
+    "/user/{userId}/generator/next": {
       get: {
         tags: ["user"],
         description: "Get next result from generator",
@@ -571,7 +579,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
@@ -603,7 +611,7 @@ module.exports = {
         }
       }
     },
-    "/user/{id}/preference": {
+    "/user/{userId}/preference": {
       get: {
         tags: ["user"],
         description: "Get preference",
@@ -611,7 +619,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
@@ -706,7 +714,7 @@ module.exports = {
         }
       }
     },
-    "/user/{id}/preference/{preferenceId}": {
+    "/user/{userId}/preference/{preferenceId}": {
       get: {
         tags: ["user"],
         description: "Get preference by id",
@@ -714,7 +722,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
