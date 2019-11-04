@@ -9,17 +9,14 @@ const createPreferenceSchema = joi.object().keys({
   rating: joi.number(),
   distance: joi.number(),
   price: joi.number(),
-  location: joi
-    .string()
-    .alphanum()
-    .required()
+  location: joi.string().required()
 });
 
 const updatePreferenceSchema = joi.object().keys({
   rating: joi.number(),
   distance: joi.number(),
   price: joi.number(),
-  location: joi.string().alphanum()
+  location: joi.string()
 });
 
 router.post(
