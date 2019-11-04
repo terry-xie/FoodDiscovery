@@ -13,7 +13,15 @@ const updateMeSchema = joi.object().keys({
     .min(8)
 });
 
-router.get("/", verifyRequestToken, userController.getUser);
+router.get(
+  "/",
+  verifyRequestToken,
+  (req, res, next) => {
+    req.params.userId = res.locals.userId;
+    next();
+  },
+  userController.getUserById
+);
 
 router.patch(
   "/",

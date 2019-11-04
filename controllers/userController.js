@@ -10,7 +10,7 @@ async function createUser(req, res, next) {
       username: req.body.username,
       password: hashedPassword
     });
-    return res.status(201).send({ username: req.body.username });
+    return res.status(201).send({ _id: user._id, username: user.username });
   } catch (err) {
     return next(err);
   }
@@ -18,9 +18,14 @@ async function createUser(req, res, next) {
 
 async function getUser(req, res, next) {
   try {
-    const users = await User.find({ _id: res.locals.userId });
-    // TODO: Don't return password
-    return res.status(200).send(users);
+    let users = await User.find({ _id: res.locals.userId });
+    users = users.map(user => {
+      return {
+        _id: user._id,
+        username: user.username
+      };
+    });
+    return res.status(200).send({ users });
   } catch (err) {
     return next(err);
   }
@@ -29,7 +34,7 @@ async function getUser(req, res, next) {
 async function getUserById(req, res, next) {
   try {
     const user = await User.findById(req.params.userId);
-    return res.status(200).send(user);
+    return res.status(200).send({ _id: user._id, username: user.username });
   } catch (err) {
     return next(err);
   }
@@ -44,7 +49,7 @@ async function updateUserById(req, res, next) {
       },
       { new: true }
     );
-    return res.status(200).send(user);
+    return res.status(200).send({ _id: user._id, username: user.username });
   } catch (err) {
     return next(err);
   }
