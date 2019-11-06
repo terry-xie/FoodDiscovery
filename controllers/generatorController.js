@@ -84,8 +84,8 @@ async function getNext(req, res, next) {
       result = await yelp.businessSearch(query);
       // cache result and increment page #
       if (result) {
-        await cache.setAsync(searchKey, JSON.stringify(result)); // TODO: add expiration
-        await cache.incrAsync(pageKey); // TODO: add expiration
+        await cache.setexAsync(searchKey, 900, JSON.stringify(result));
+        await cache.incrbyAsync(pageKey, limit);
       }
     }
     res.status(200).json({ result });
