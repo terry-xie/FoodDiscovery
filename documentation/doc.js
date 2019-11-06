@@ -20,6 +20,7 @@ module.exports = {
       get: {
         tags: ["me"],
         description: "Get current user",
+        summary: "Get current user",
         security: [{ BearerAuth: [] }],
         responses: {
           "200": {
@@ -47,6 +48,7 @@ module.exports = {
       patch: {
         tags: ["me"],
         description: "Update current user",
+        summary: "Update current user",
         security: [{ BearerAuth: [] }],
         requestBody: {
           content: {
@@ -90,6 +92,7 @@ module.exports = {
       get: {
         tags: ["me"],
         description: "Get preference of current user",
+        summary: "Get preference of current user",
         security: [{ BearerAuth: [] }],
         responses: {
           "200": {
@@ -117,6 +120,7 @@ module.exports = {
       post: {
         tags: ["me"],
         description: "Create preference for current user",
+        summary: "Create preference for current user",
         security: [{ BearerAuth: [] }],
         requestBody: {
           required: true,
@@ -171,6 +175,7 @@ module.exports = {
       get: {
         tags: ["me"],
         description: "Get generator of current user",
+        summary: "Get generator of current user",
         security: [{ BearerAuth: [] }],
         responses: {
           "200": {
@@ -198,6 +203,7 @@ module.exports = {
       post: {
         tags: ["me"],
         description: "Create generator",
+        summary: "Create generator for current user",
         security: [{ BearerAuth: [] }],
         requestBody: {
           required: true,
@@ -242,6 +248,7 @@ module.exports = {
       get: {
         tags: ["me"],
         description: "Get next result from generator",
+        summary: "Get next results from generator of current user",
         security: [{ BearerAuth: [] }],
         responses: {
           "200": {
@@ -271,6 +278,7 @@ module.exports = {
       post: {
         tags: ["session"],
         description: "Create a session",
+        summary: "Login with user credentials",
         requestBody: {
           required: true,
           content: {
@@ -318,6 +326,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get users",
+        summary: "Get users",
         security: [{ BearerAuth: [] }],
         responses: {
           "200": {
@@ -353,6 +362,7 @@ module.exports = {
       post: {
         tags: ["user"],
         description: "Create user",
+        summary: "Register a new user",
         requestBody: {
           required: true,
           content: {
@@ -400,6 +410,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get user by id",
+        summary: "Get user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -438,6 +449,7 @@ module.exports = {
       patch: {
         tags: ["user"],
         description: "Update user by id",
+        summary: "Update user by id",
         security: [{ BearerAuth: [] }],
         requestBody: {
           required: true,
@@ -482,6 +494,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get generator",
+        summary: "Get generator of user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -520,6 +533,7 @@ module.exports = {
       post: {
         tags: ["user"],
         description: "Create generator",
+        summary: "Create generator for user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -575,6 +589,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get next result from generator",
+        summary: "Get next result from generator of user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -615,6 +630,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get preference",
+        summary: "Get preference of user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -653,6 +669,7 @@ module.exports = {
       post: {
         tags: ["user"],
         description: "Create preference",
+        summary: "Create preference for user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -718,6 +735,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get preference by id",
+        summary: "Get preference for user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -765,6 +783,7 @@ module.exports = {
       patch: {
         tags: ["user"],
         description: "Update preference by id",
+        summary: "Update preference for user by id",
         security: [{ BearerAuth: [] }],
         requestBody: {
           required: true,
