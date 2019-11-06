@@ -30,7 +30,8 @@ class YelpService {
           price,
           location,
           limit,
-          offset
+          offset,
+          categories: "restaurants"
         }
       });
 
