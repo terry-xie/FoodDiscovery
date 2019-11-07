@@ -1,15 +1,24 @@
 const Preference = require("../models/preference.js");
 
+function toResponseObj(obj) {
+  return {
+    id: obj._id,
+    distance: obj.distance,
+    price: obj.price,
+    location: obj.location,
+    userId: obj.userId
+  };
+}
+
 async function createPreference(req, res, next) {
   try {
     const preference = await Preference.create({
-      rating: req.body.rating,
       distance: req.body.distance,
       price: req.body.price,
       location: req.body.location,
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(201).json(preference);
+    return res.status(201).json(toResponseObj(preference));
   } catch (err) {
     return next(err);
   }
@@ -17,10 +26,13 @@ async function createPreference(req, res, next) {
 
 async function getPreference(req, res, next) {
   try {
-    const preferences = await Preference.find({
+    let preferences = await Preference.find({
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(200).json(preferences);
+    preferences = preferences.map(preference => {
+      return toResponseObj(preference);
+    });
+    return res.status(200).json({ preferences });
   } catch (err) {
     return next(err);
   }
@@ -29,7 +41,8 @@ async function getPreference(req, res, next) {
 async function getPreferenceById(req, res, next) {
   try {
     const preference = await Preference.findById(req.params.preferenceId);
-    return res.status(200).json(preference);
+    if (!preference) res.status(404).json({ error: "Preference not found" });
+    return res.status(200).json(toResponseObj(preference));
   } catch (err) {
     return next(err);
   }
@@ -41,7 +54,6 @@ async function updatePreferenceById(req, res, next) {
       req.params.preferenceId,
       {
         $set: {
-          ...(req.body.rating && { rating: req.body.rating }),
           ...(req.body.distance && { distance: req.body.distance }),
           ...(req.body.price && { price: req.body.price }),
           ...(req.body.location && { location: req.body.location })
@@ -49,7 +61,7 @@ async function updatePreferenceById(req, res, next) {
       },
       { new: true }
     );
-    return res.status(200).json(preference);
+    return res.status(200).json(toResponseObj(preference));
   } catch (err) {
     return next(err);
   }
