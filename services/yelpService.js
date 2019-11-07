@@ -20,13 +20,13 @@ class YelpService {
   async businessSearch(query) {
     // TODO: validate query
 
-    const { rating, distance, price, location, limit, offset } = query;
+    const { rating, radius, price, location, limit, offset } = query;
 
     try {
       const result = await this._yelpInstance.get("businesses/search", {
         params: {
           rating,
-          distance,
+          radius,
           price,
           location,
           limit,

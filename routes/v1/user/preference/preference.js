@@ -7,14 +7,14 @@ const router = express.Router({ mergeParams: true });
 
 const createPreferenceSchema = joi.object().keys({
   rating: joi.number(),
-  distance: joi.number(),
+  radius: joi.number(),
   price: joi.number(),
   location: joi.string().required()
 });
 
 const updatePreferenceSchema = joi.object().keys({
   rating: joi.number(),
-  distance: joi.number(),
+  radius: joi.number(),
   price: joi.number(),
   location: joi.string()
 });

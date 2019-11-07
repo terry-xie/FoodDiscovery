@@ -58,7 +58,7 @@ async function getGenerator(req, res, next) {
 
 async function getNext(req, res, next) {
   try {
-    const { rating, distance, price, location } = await Preference.findOne({
+    const { rating, radius, price, location } = await Preference.findOne({
       userId: req.params.userId || res.locals.userId
     });
     const { limit } = (await Generator.findOne({
@@ -72,7 +72,7 @@ async function getNext(req, res, next) {
     // form query
     const query = {
       ...(rating && { rating }),
-      ...(distance && { distance }),
+      ...(radius && { radius }),
       ...(price && { price }),
       ...(location && { location }),
       ...(limit && { limit }),

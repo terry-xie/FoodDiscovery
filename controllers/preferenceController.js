@@ -3,7 +3,7 @@ const Preference = require("../models/preference.js");
 function toResponseObj(obj) {
   return {
     id: obj._id,
-    distance: obj.distance,
+    radius: obj.radius,
     price: obj.price,
     location: obj.location,
     userId: obj.userId
@@ -13,7 +13,7 @@ function toResponseObj(obj) {
 async function createPreference(req, res, next) {
   try {
     const preference = await Preference.create({
-      distance: req.body.distance,
+      radius: req.body.radius,
       price: req.body.price,
       location: req.body.location,
       userId: req.params.userId || res.locals.userId
@@ -55,7 +55,7 @@ async function updatePreferenceById(req, res, next) {
       req.params.preferenceId,
       {
         $set: {
-          ...(req.body.distance && { distance: req.body.distance }),
+          ...(req.body.radius && { radius: req.body.radius }),
           ...(req.body.price && { price: req.body.price }),
           ...(req.body.location && { location: req.body.location })
         }
