@@ -41,7 +41,8 @@ async function getPreference(req, res, next) {
 async function getPreferenceById(req, res, next) {
   try {
     const preference = await Preference.findById(req.params.preferenceId);
-    if (!preference) res.status(404).json({ error: "Preference not found" });
+    if (!preference)
+      return res.status(404).json({ error: "Preference not found" });
     return res.status(200).json(toResponseObj(preference));
   } catch (err) {
     return next(err);
