@@ -2,17 +2,21 @@ module.exports = {
   openapi: "3.0.0",
   info: {
     version: "1.0.0",
-    title: "some cool project",
-    description: "a cool project",
+    title: "Food Genie",
+    description:
+      "Food Genie is a REST API that retrieves restaurant data from Yelp through their API. Try it out by performing the following simple steps: \n" +
+      "1. Register a user (POST /user) \n" +
+      "2. Login to obtain a token (POST /session) \n" +
+      "3. Attach the token to future requests through the Authorize button to gain access to all protected routes \n" +
+      "4. Get restaurant data (GET /me/generator/next)",
     contact: {
-      name: "Terry Xie",
-      email: "txie92@gmail.com"
+      name: "Terry Xie"
     }
   },
   servers: [
     {
       url: "/api/v1",
-      description: "Local API v1 Server"
+      description: "Test API v1 Server"
     }
   ],
   paths: {
@@ -38,7 +42,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -80,7 +84,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -110,7 +114,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -129,11 +133,8 @@ module.exports = {
               schema: {
                 type: "object",
                 properties: {
-                  rating: {
-                    $ref: "#/components/schemas/rating"
-                  },
-                  distance: {
-                    $ref: "#/components/schemas/distance"
+                  radius: {
+                    $ref: "#/components/schemas/radius"
                   },
                   price: {
                     $ref: "#/components/schemas/price"
@@ -163,7 +164,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -193,7 +194,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -236,7 +237,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -266,7 +267,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -304,7 +305,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Session"
+                  $ref: "#/components/schemas/token"
                 }
               }
             }
@@ -314,7 +315,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -352,7 +353,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -398,7 +399,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -439,7 +440,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -482,7 +483,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -513,7 +514,15 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Generator"
+                  type: "object",
+                  properties: {
+                    generators: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/Generator"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -523,7 +532,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -577,7 +586,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -618,7 +627,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -649,7 +658,15 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Preference"
+                  type: "object",
+                  properties: {
+                    preferences: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/Preference"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -659,7 +676,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -689,11 +706,8 @@ module.exports = {
               schema: {
                 type: "object",
                 properties: {
-                  rating: {
-                    $ref: "#/components/schemas/rating"
-                  },
-                  distance: {
-                    $ref: "#/components/schemas/distance"
+                  radius: {
+                    $ref: "#/components/schemas/radius"
                   },
                   price: {
                     $ref: "#/components/schemas/price"
@@ -723,7 +737,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -773,7 +787,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -792,11 +806,8 @@ module.exports = {
               schema: {
                 type: "object",
                 properties: {
-                  rating: {
-                    $ref: "#/components/schemas/rating"
-                  },
-                  distance: {
-                    $ref: "#/components/schemas/distance"
+                  radius: {
+                    $ref: "#/components/schemas/radius"
                   },
                   price: {
                     $ref: "#/components/schemas/price"
@@ -825,7 +836,7 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Error"
+                  $ref: "#/components/schemas/error"
                 }
               }
             }
@@ -838,92 +849,108 @@ module.exports = {
     schemas: {
       id: {
         type: "string",
-        example: "5d9ec308336aac329a80ef32"
+        example: "5d9ec308336aac329a80ef32",
+        description: "Id to reference the resource"
       },
       username: {
         type: "string",
-        example: "TestUser1234"
+        example: "Test1234",
+        description: "Username must contain at least 8 alphanumeric characters"
       },
       password: {
         type: "string",
-        example: "TestPassword1234"
+        example: "Test1234",
+        description: "Password must contain at least 8 alphanumeric characters"
       },
       limit: {
-        type: "number",
-        example: "1"
+        type: "integer",
+        example: 1,
+        description:
+          "Controls how many results are returned in the call to next"
       },
-      rating: {
-        type: "integer"
-      },
-      distance: {
-        type: "integer"
+      radius: {
+        type: "integer",
+        example: 16000,
+        description:
+          "Sets the max distance of how far to search for businesses. Value is measured in meters"
       },
       price: {
-        type: "integer"
+        type: "integer",
+        example: 1,
+        description:
+          "Controls how expensive the businesses are on a scale of 1 through 4 from cheap to expensive"
       },
       location: {
-        type: "string"
+        type: "string",
+        example: "San Francisco",
+        description:
+          "Sets the location to look for businesses. Value can be an address. Examples: 'New York City', 'NYC', '350 5th Ave, New York, NY 10118'"
+      },
+      token: {
+        type: "string",
+        example:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZGE3Y2M0YjM2NTJhNjBlNGJhYzRjNjkiLCJpYXQiOjE1NzMwOTg0OTZ9.G0edLhKTypW27UAAN17PpkajP84XG1DTcXk5wXrDFJY",
+        description:
+          "Token returned from a successful login. This token is required to access protected endpoints. It should be included as a Bearer Authorization header of the request"
+      },
+      error: {
+        type: "object",
+        properties: {
+          error: {
+            type: "string"
+          }
+        },
+        example: { error: "an explanation of the error" },
+        description: "An error message"
       },
       User: {
         type: "object",
         properties: {
-          _id: {
+          id: {
             $ref: "#/components/schemas/id"
           },
           username: {
             $ref: "#/components/schemas/username"
           }
-        }
-      },
-      Session: {
-        type: "object",
-        properties: {
-          token: {
-            type: "string"
-          }
-        }
+        },
+        description: "Represents a registered user"
       },
       Generator: {
         type: "object",
         properties: {
-          _id: {
+          id: {
             $ref: "#/components/schemas/id"
           },
           limit: {
             $ref: "#/components/schemas/limit"
           }
-        }
+        },
+        description: "Controls the retrieval of business data"
       },
       NextResult: {
-        type: "object" // TODO: update this
+        type: "object", // TODO: update this
+        description: "Info on businesses retrieved in latest retrieval"
       },
       Preference: {
         type: "object",
         properties: {
-          _id: {
+          id: {
             $ref: "#/components/schemas/id"
           },
-          rating: {
-            $ref: "#/components/schemas/rating"
-          },
-          distance: {
-            $ref: "#/components/schemas/distance"
+          radius: {
+            $ref: "#/components/schemas/radius"
           },
           price: {
             $ref: "#/components/schemas/price"
           },
           location: {
             $ref: "#/components/schemas/location"
+          },
+          userId: {
+            $ref: "#/components/schemas/id"
           }
-        }
-      },
-      Error: {
-        type: "object",
-        properties: {
-          error: {
-            type: "string"
-          }
-        }
+        },
+        description: "Controls what business information should be retrieved"
       }
     },
     securitySchemes: {
