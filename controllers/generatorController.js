@@ -7,13 +7,20 @@ const YelpService = require("../services/yelpService.js");
 bluebird.promisifyAll(redis);
 const cache = redis.createClient(); // TODO: decouple redis from this file and maybe create connection somewhere else
 
+function toResponseObj(obj) {
+  return {
+    id: obj._id,
+    limit: obj.limit
+  };
+}
+
 async function createGenerator(req, res, next) {
   try {
     const generator = await Generator.create({
       limit: req.body.limit,
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(201).json(generator);
+    return res.status(201).json(toResponseObj(generator));
   } catch (err) {
     return next(err);
   }
@@ -21,10 +28,13 @@ async function createGenerator(req, res, next) {
 
 async function getGenerator(req, res, next) {
   try {
-    const generators = await Generator.find({
+    let generators = await Generator.find({
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(200).json(generators);
+    generators = generators.map(generator => {
+      return toResponseObj(generator);
+    });
+    return res.status(200).json({ generators });
   } catch (err) {
     return next(err);
   }
@@ -74,21 +84,21 @@ async function getNext(req, res, next) {
     )}`;
     const cachedSearchResult = JSON.parse(await cache.getAsync(searchKey));
 
-    let result;
+    let results;
     // hit
-    if (cachedSearchResult) result = cachedSearchResult;
+    if (cachedSearchResult) results = cachedSearchResult;
     // miss
     else {
       const yelp = new YelpService();
       yelp.initialize();
-      result = await yelp.businessSearch(query);
+      results = await yelp.businessSearch(query);
       // cache result and increment page #
-      if (result) {
-        await cache.setexAsync(searchKey, 900, JSON.stringify(result));
+      if (results) {
+        await cache.setexAsync(searchKey, 900, JSON.stringify(results));
         await cache.incrbyAsync(pageKey, limit);
       }
     }
-    res.status(200).json({ result });
+    res.status(200).json({ results });
   } catch (err) {
     next(err);
   }
