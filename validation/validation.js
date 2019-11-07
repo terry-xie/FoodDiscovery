@@ -8,7 +8,7 @@ module.exports = schema => {
     } catch (err) {
       return res
         .status(400)
-        .send({ Error: err.details.map(x => x.message).join(",") });
+        .json({ error: err.details.map(x => x.message).join(",") });
     }
   };
 };

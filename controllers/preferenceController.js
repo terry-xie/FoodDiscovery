@@ -9,7 +9,7 @@ async function createPreference(req, res, next) {
       location: req.body.location,
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(201).send(preference);
+    return res.status(201).json(preference);
   } catch (err) {
     return next(err);
   }
@@ -20,7 +20,7 @@ async function getPreference(req, res, next) {
     const preferences = await Preference.find({
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(200).send(preferences);
+    return res.status(200).json(preferences);
   } catch (err) {
     return next(err);
   }
@@ -29,7 +29,7 @@ async function getPreference(req, res, next) {
 async function getPreferenceById(req, res, next) {
   try {
     const preference = await Preference.findById(req.params.preferenceId);
-    return res.status(200).send(preference);
+    return res.status(200).json(preference);
   } catch (err) {
     return next(err);
   }
@@ -49,7 +49,7 @@ async function updatePreferenceById(req, res, next) {
       },
       { new: true }
     );
-    return res.status(200).send(preference);
+    return res.status(200).json(preference);
   } catch (err) {
     return next(err);
   }

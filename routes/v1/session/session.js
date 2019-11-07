@@ -23,7 +23,7 @@ async function validateRequest(req, res, next) {
   } catch (err) {
     return res
       .status(400)
-      .send({ Error: err.details.map(x => x.message).join(",") });
+      .json({ error: err.details.map(x => x.message).join(",") });
   }
   return next();
 }

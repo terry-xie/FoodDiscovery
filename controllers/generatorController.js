@@ -13,7 +13,7 @@ async function createGenerator(req, res, next) {
       limit: req.body.limit,
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(201).send(generator);
+    return res.status(201).json(generator);
   } catch (err) {
     return next(err);
   }
@@ -24,7 +24,7 @@ async function getGenerator(req, res, next) {
     const generators = await Generator.find({
       userId: req.params.userId || res.locals.userId
     });
-    return res.status(200).send(generators);
+    return res.status(200).json(generators);
   } catch (err) {
     return next(err);
   }

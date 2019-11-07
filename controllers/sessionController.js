@@ -8,17 +8,17 @@ async function createSession(req, res, next) {
     if (!user)
       return res
         .status(400)
-        .send({ Error: "Username does not exist or password is incorrect" });
+        .json({ error: "Username does not exist or password is incorrect" });
     const isPasswordMatch = await compare(req.body.password, user.password);
     if (!isPasswordMatch)
       return res
         .status(400)
-        .send({ Error: "Username does not exist or password is incorrect" });
+        .json({ error: "Username does not exist or password is incorrect" });
     const token = await generateToken(
       { sub: user._id },
       process.env.APP_PRIVATEKEY
     );
-    return res.status(201).send({ Token: token });
+    return res.status(201).json({ Token: token });
   } catch (err) {
     return next(err);
   }
