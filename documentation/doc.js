@@ -4,10 +4,10 @@ module.exports = {
     version: "1.0.0",
     title: "Food Genie",
     description:
-      "Food Genie is a REST API that retrieves restaurant data from Yelp through their API. Try it out by performing the following simple steps: \n" +
+      "Food Genie is a REST API that retrieves restaurant data from Yelp through their API. Try it out by following these simple steps: \n" +
       "1. Register a user (POST /user) \n" +
-      "2. Login to obtain a token (POST /session) \n" +
-      "3. Attach the token to future requests through the Authorize button to gain access to all protected routes \n" +
+      "2. Login with the newly registered user to obtain a token in the response (POST /session) \n" +
+      "3. Use the Authorize button to attach the token to future requests and gain access to all protected routes \n" +
       "4. Get restaurant data (GET /me/generator/next)",
     contact: {
       name: "Terry Xie"
@@ -104,7 +104,15 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Preference"
+                  type: "object",
+                  properties: {
+                    preferences: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/Preference"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -123,7 +131,8 @@ module.exports = {
       },
       post: {
         tags: ["me"],
-        description: "Create preference for current user",
+        description:
+          "Create preference for current user. Only one preference per user is supported at the moment",
         summary: "Create preference for current user",
         security: [{ BearerAuth: [] }],
         requestBody: {
@@ -168,6 +177,17 @@ module.exports = {
                 }
               }
             }
+          },
+          "403": {
+            description:
+              "A preference already exists for the user. Either update or delete the existing preference",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
           }
         }
       }
@@ -184,7 +204,15 @@ module.exports = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Generator"
+                  type: "object",
+                  properties: {
+                    generators: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/Generator"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -203,7 +231,8 @@ module.exports = {
       },
       post: {
         tags: ["me"],
-        description: "Create generator",
+        description:
+          "Create generator for current user. Only one generator per user is supported at the moment",
         summary: "Create generator for current user",
         security: [{ BearerAuth: [] }],
         requestBody: {
@@ -248,12 +277,16 @@ module.exports = {
     "/me/generator/next": {
       get: {
         tags: ["me"],
-        description: "Get next result from generator",
-        summary: "Get next results from generator of current user",
+        description:
+          "Get next results from generator. If no generator has been created, " +
+          "a generator with default limit of 1 will be used. If no preference has " +
+          "been created, a preference with default values (price=1, radius=16000, " +
+          "location='San Francisco') will be used.",
+        summary: "Get next results using generator of current user",
         security: [{ BearerAuth: [] }],
         responses: {
           "200": {
-            description: "Next Generator result retrieved successfully",
+            description: "Results retrieved successfully",
             content: {
               "application/json": {
                 schema: {
@@ -264,6 +297,17 @@ module.exports = {
           },
           "400": {
             description: "Invalid request. Refer to the error message.",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "403": {
+            description:
+              "Location is missing. Please create a preference with the desired location first before accessing this endpoint.",
             content: {
               "application/json": {
                 schema: {
@@ -435,8 +479,8 @@ module.exports = {
               }
             }
           },
-          "400": {
-            description: "Invalid request. Refer to the error message.",
+          "404": {
+            description: "User not found",
             content: {
               "application/json": {
                 schema: {
@@ -494,7 +538,7 @@ module.exports = {
     "/user/{userId}/generator": {
       get: {
         tags: ["user"],
-        description: "Get generator",
+        description: "Get generator of user",
         summary: "Get generator of user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
@@ -541,7 +585,8 @@ module.exports = {
       },
       post: {
         tags: ["user"],
-        description: "Create generator",
+        description:
+          "Create generator. Only one generator per user is supported at the moment",
         summary: "Create generator for user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
@@ -590,6 +635,17 @@ module.exports = {
                 }
               }
             }
+          },
+          "403": {
+            description:
+              "A generator already exists for the user. Either update or delete the existing generator",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
           }
         }
       }
@@ -597,7 +653,11 @@ module.exports = {
     "/user/{userId}/generator/next": {
       get: {
         tags: ["user"],
-        description: "Get next result from generator",
+        description:
+          "Get next results from generator. If no generator has been created, " +
+          "a generator with default limit of 1 will be used. If no preference has " +
+          "been created, a preference with default values (price=1, radius=16000, " +
+          "location='San Francisco') will be used.",
         summary: "Get next result from generator of user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
@@ -613,7 +673,7 @@ module.exports = {
         ],
         responses: {
           "200": {
-            description: "Next Generator result retrieved successfully",
+            description: "Results retrieved successfully",
             content: {
               "application/json": {
                 schema: {
@@ -638,7 +698,7 @@ module.exports = {
     "/user/{userId}/preference": {
       get: {
         tags: ["user"],
-        description: "Get preference",
+        description: "Get preference of user",
         summary: "Get preference of user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
@@ -685,7 +745,8 @@ module.exports = {
       },
       post: {
         tags: ["user"],
-        description: "Create preference",
+        description:
+          "Create preference. Only one preference per user is supported at the moment",
         summary: "Create preference for user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
@@ -741,6 +802,17 @@ module.exports = {
                 }
               }
             }
+          },
+          "403": {
+            description:
+              "A preference already exists for the user. Either update or delete the existing preference",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
           }
         }
       }
@@ -749,7 +821,7 @@ module.exports = {
       get: {
         tags: ["user"],
         description: "Get preference by id",
-        summary: "Get preference for user by id",
+        summary: "Get specific preference for user by id",
         security: [{ BearerAuth: [] }],
         parameters: [
           {
@@ -782,8 +854,8 @@ module.exports = {
               }
             }
           },
-          "400": {
-            description: "Invalid request. Refer to the error message.",
+          "404": {
+            description: "Preference not found",
             content: {
               "application/json": {
                 schema: {
@@ -797,7 +869,7 @@ module.exports = {
       patch: {
         tags: ["user"],
         description: "Update preference by id",
-        summary: "Update preference for user by id",
+        summary: "Update specific preference for user by id",
         security: [{ BearerAuth: [] }],
         requestBody: {
           required: true,
@@ -866,7 +938,7 @@ module.exports = {
         type: "integer",
         example: 1,
         description:
-          "Controls how many results are returned in the call to next"
+          "Controls how many results are returned in the call to next. Default is 1"
       },
       radius: {
         type: "integer",
@@ -888,8 +960,15 @@ module.exports = {
       },
       token: {
         type: "string",
-        example:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZGE3Y2M0YjM2NTJhNjBlNGJhYzRjNjkiLCJpYXQiOjE1NzMwOTg0OTZ9.G0edLhKTypW27UAAN17PpkajP84XG1DTcXk5wXrDFJY",
+        properties: {
+          token: {
+            type: "string"
+          }
+        },
+        example: {
+          token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZGE3Y2M0YjM2NTJhNjBlNGJhYzRjNjkiLCJpYXQiOjE1NzMwOTg0OTZ9.G0edLhKTypW27UAAN17PpkajP84XG1DTcXk5wXrDFJY"
+        },
         description:
           "Token returned from a successful login. This token is required to access protected endpoints. It should be included as a Bearer Authorization header of the request"
       },
@@ -928,8 +1007,106 @@ module.exports = {
         description: "Controls the retrieval of business data"
       },
       NextResult: {
-        type: "object", // TODO: update this
-        description: "Info on businesses retrieved in latest retrieval"
+        type: "object",
+        properties: {
+          results: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                rating: {
+                  type: "number"
+                },
+                price: {
+                  type: "number"
+                },
+                name: {
+                  type: "string"
+                },
+                location: {
+                  type: "object",
+                  properties: {
+                    address1: {
+                      type: "string"
+                    },
+                    address2: {
+                      type: "string"
+                    },
+                    address3: {
+                      type: "string"
+                    },
+                    city: {
+                      type: "string"
+                    },
+                    zip_code: {
+                      type: "string"
+                    },
+                    country: {
+                      type: "string"
+                    },
+                    state: {
+                      type: "string"
+                    },
+                    display_address: {
+                      type: "array",
+                      items: {
+                        type: "string"
+                      }
+                    }
+                  }
+                },
+                categories: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      alias: {
+                        type: "string"
+                      },
+                      title: {
+                        type: "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        example: {
+          results: [
+            {
+              rating: 4,
+              price: "$",
+              name: "Sophie's Crepes",
+              location: {
+                address1: "1581 Webster St",
+                address2: "Ste 275",
+                address3: "",
+                city: "San Francisco",
+                zip_code: "94115",
+                country: "US",
+                state: "CA",
+                display_address: [
+                  "1581 Webster St",
+                  "Ste 275",
+                  "San Francisco, CA 94115"
+                ]
+              },
+              categories: [
+                {
+                  alias: "desserts",
+                  title: "Desserts"
+                },
+                {
+                  alias: "creperies",
+                  title: "Creperies"
+                }
+              ]
+            }
+          ]
+        },
+        description: "Business data retrieved in latest retrieval"
       },
       Preference: {
         type: "object",
