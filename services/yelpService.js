@@ -38,7 +38,7 @@ class YelpService {
       return result.data.businesses.map(x => {
         return {
           rating: x.rating,
-          price: x.price,
+          price: x.price && x.price.length,
           name: x.name,
           location: x.location,
           categories: x.categories
