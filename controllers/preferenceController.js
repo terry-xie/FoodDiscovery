@@ -60,8 +60,11 @@ async function getPreferenceById(req, res, next) {
 
 async function updatePreferenceById(req, res, next) {
   try {
-    const preference = await Preference.findByIdAndUpdate(
-      req.params.preferenceId,
+    const preference = await Preference.findOneAndUpdate(
+      {
+        _id: req.params.preferenceId,
+        userId: req.params.userId || res.locals.userId
+      },
       {
         $set: {
           ...(req.body.radius && { radius: req.body.radius }),
@@ -71,6 +74,10 @@ async function updatePreferenceById(req, res, next) {
       },
       { new: true }
     );
+
+    if (!preference)
+      return res.status(404).json({ error: "Preference not found" });
+
     return res.status(200).json(toResponseObj(preference));
   } catch (err) {
     return next(err);
