@@ -6,7 +6,7 @@ const generatorController = require("../../../../controllers/generatorController
 const router = express.Router({ mergeParams: true });
 
 const createGeneratorSchema = joi.object().keys({
-  limit: joi.number()
+  limit: joi.number().integer()
 });
 
 router.get("/next", generatorController.getNext);

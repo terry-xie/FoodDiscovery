@@ -6,16 +6,24 @@ const validateRequest = require("../../../../validation/validation.js");
 const router = express.Router({ mergeParams: true });
 
 const createPreferenceSchema = joi.object().keys({
-  rating: joi.number(),
-  radius: joi.number(),
-  price: joi.number(),
+  rating: joi.number().integer(),
+  radius: joi.number().integer(),
+  price: joi
+    .number()
+    .integer()
+    .min(1)
+    .max(4),
   location: joi.string().required()
 });
 
 const updatePreferenceSchema = joi.object().keys({
-  rating: joi.number(),
-  radius: joi.number(),
-  price: joi.number(),
+  rating: joi.number().integer(),
+  radius: joi.number().integer(),
+  price: joi
+    .number()
+    .integer()
+    .min(1)
+    .max(4),
   location: joi.string()
 });
 
