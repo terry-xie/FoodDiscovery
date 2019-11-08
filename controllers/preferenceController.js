@@ -12,7 +12,16 @@ function toResponseObj(obj) {
 
 async function createPreference(req, res, next) {
   try {
-    const preference = await Preference.create({
+    let preference = await Preference.find({
+      userId: req.params.userId || res.locals.userId
+    });
+
+    if (preference)
+      res
+        .status(403)
+        .json({ error: "A preference already exists for the user" });
+
+    preference = await Preference.create({
       radius: req.body.radius,
       price: req.body.price,
       location: req.body.location,
