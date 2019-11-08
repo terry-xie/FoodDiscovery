@@ -16,7 +16,16 @@ function toResponseObj(obj) {
 
 async function createGenerator(req, res, next) {
   try {
-    const generator = await Generator.create({
+    let generator = await Generator.find({
+      userId: req.params.userId || res.locals.userId
+    });
+
+    if (generator)
+      res
+        .status(403)
+        .json({ error: "A generator already exists for the user" });
+
+    generator = await Generator.create({
       limit: req.body.limit,
       userId: req.params.userId || res.locals.userId
     });
@@ -58,9 +67,10 @@ async function getGenerator(req, res, next) {
 
 async function getNext(req, res, next) {
   try {
-    const { rating, radius, price, location } = await Preference.findOne({
+    const { radius, price, location } = (await Preference.findOne({
       userId: req.params.userId || res.locals.userId
-    });
+    })) || { radius: 16000, price: 1, location: "San Francisco" };
+
     const { limit } = (await Generator.findOne({
       userId: req.params.userId
     })) || { limit: 1 };
@@ -71,7 +81,6 @@ async function getNext(req, res, next) {
 
     // form query
     const query = {
-      ...(rating && { rating }),
       ...(radius && { radius }),
       ...(price && { price }),
       ...(location && { location }),
@@ -98,9 +107,9 @@ async function getNext(req, res, next) {
         await cache.incrbyAsync(pageKey, limit);
       }
     }
-    res.status(200).json({ results });
+    return res.status(200).json({ results });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 }
 
