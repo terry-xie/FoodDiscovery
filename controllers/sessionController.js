@@ -18,7 +18,7 @@ async function createSession(req, res, next) {
       { sub: user._id },
       process.env.APP_PRIVATEKEY
     );
-    return res.status(201).json({ Token: token });
+    return res.status(201).json({ token });
   } catch (err) {
     return next(err);
   }
