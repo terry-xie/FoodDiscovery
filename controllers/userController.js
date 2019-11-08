@@ -54,6 +54,9 @@ async function updateUserById(req, res, next) {
       },
       { new: true }
     );
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
     return res.status(200).json(toResponseObj(user));
   } catch (err) {
     return next(err);
