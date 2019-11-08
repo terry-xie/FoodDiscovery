@@ -592,7 +592,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
@@ -752,7 +752,7 @@ module.exports = {
         parameters: [
           {
             in: "path",
-            name: "id",
+            name: "userId",
             required: true,
             schema: {
               $ref: "#/components/schemas/id"
@@ -871,6 +871,26 @@ module.exports = {
         description: "Update preference by id",
         summary: "Update specific preference for user by id",
         security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "userId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of user"
+          },
+          {
+            in: "path",
+            name: "preferenceId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of preference"
+          }
+        ],
         requestBody: {
           required: true,
           content: {
