@@ -43,4 +43,6 @@ router.patch(
   preferenceController.updatePreferenceById
 );
 
+router.delete("/:preferenceId", preferenceController.deletePreferenceById);
+
 module.exports = router;

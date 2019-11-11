@@ -12,12 +12,12 @@ function toResponseObj(obj) {
 
 async function createPreference(req, res, next) {
   try {
-    let preference = await Preference.find({
+    let preference = await Preference.exists({
       userId: req.params.userId || res.locals.userId
     });
 
     if (preference)
-      res
+      return res
         .status(403)
         .json({ error: "A preference already exists for the user" });
 
@@ -84,9 +84,26 @@ async function updatePreferenceById(req, res, next) {
   }
 }
 
+async function deletePreferenceById(req, res, next) {
+  try {
+    const preference = await Preference.findOneAndDelete({
+      _id: req.params.preferenceId,
+      userId: req.params.userId || res.locals.userId
+    });
+
+    if (!preference)
+      return res.status(404).json({ error: "Preference not found" });
+
+    return res.status(204).json({});
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   getPreference,
   getPreferenceById,
   createPreference,
-  updatePreferenceById
+  updatePreferenceById,
+  deletePreferenceById
 };
