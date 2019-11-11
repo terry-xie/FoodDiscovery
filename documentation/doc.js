@@ -650,6 +650,163 @@ module.exports = {
         }
       }
     },
+    "/user/{userId}/generator/{generatorId}": {
+      get: {
+        tags: ["user"],
+        description: "Get generator by id",
+        summary: "Get specific generator for user by id",
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "userId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of user"
+          },
+          {
+            in: "path",
+            name: "generatorId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of generator"
+          }
+        ],
+        responses: {
+          "200": {
+            description: "Generator retrieved successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Generator"
+                }
+              }
+            }
+          },
+          "404": {
+            description: "Generator not found",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      patch: {
+        tags: ["user"],
+        description: "Update generator by id",
+        summary: "Update specific generator for user by id",
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "userId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of user"
+          },
+          {
+            in: "path",
+            name: "generatorId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of generator"
+          }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  limit: {
+                    $ref: "#/components/schemas/limit"
+                  }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          "200": {
+            description: "Generator updated successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/Generator"
+                }
+              }
+            }
+          },
+          "400": {
+            description: "Invalid request. Refer to the error message.",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      delete: {
+        tags: ["user"],
+        description: "Delete generator by id",
+        summary: "Delete specific generator for user by id",
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "userId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of user"
+          },
+          {
+            in: "path",
+            name: "generatorId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of generator"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "Generator deleted successfully",
+            content: {
+              "application/json": {}
+            }
+          },
+          "404": {
+            description: "Preference not found",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/{userId}/generator/next": {
       get: {
         tags: ["user"],
@@ -925,6 +1082,50 @@ module.exports = {
           },
           "400": {
             description: "Invalid request. Refer to the error message.",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      delete: {
+        tags: ["user"],
+        description: "Delete preference by id",
+        summary: "Delete specific preference for user by id",
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "userId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of user"
+          },
+          {
+            in: "path",
+            name: "preferenceId",
+            required: true,
+            schema: {
+              $ref: "#/components/schemas/id"
+            },
+            description: "id of preference"
+          }
+        ],
+        responses: {
+          "204": {
+            description: "Preference deleted successfully",
+            content: {
+              "application/json": {}
+            }
+          },
+          "404": {
+            description: "Preference not found",
             content: {
               "application/json": {
                 schema: {
