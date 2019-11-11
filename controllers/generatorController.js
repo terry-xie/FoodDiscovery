@@ -16,12 +16,12 @@ function toResponseObj(obj) {
 
 async function createGenerator(req, res, next) {
   try {
-    let generator = await Generator.find({
+    let generator = await Generator.exists({
       userId: req.params.userId || res.locals.userId
     });
 
     if (generator)
-      res
+      return res
         .status(403)
         .json({ error: "A generator already exists for the user" });
 
@@ -49,21 +49,49 @@ async function getGenerator(req, res, next) {
   }
 }
 
-// async function updateGenerator(req, res, next) {
-//   try {
-//     const generator = await Generator.findOneAndUpdate(
-//       { userId: req.params.userId || res.locals.userId },
-//       {
-//         ...(req.params.limit && { limit: req.params.limit }),
-//         ...(req.params.offset && { offset: req.params.offset })
-//       },
-//       { new: true }
-//     );
-//     return res.status(200).send(generator);
-//   } catch (err) {
-//     return next(err);
-//   }
-// }
+async function getGeneratorById(req, res, next) {
+  try {
+    const generator = await Generator.findById(req.params.generatorId);
+    if (!generator)
+      return res.status(404).json({ error: "Generator not found" });
+    return res.status(200).json(toResponseObj(generator));
+  } catch (err) {
+    return next(err);
+  }
+}
+
+async function updateGeneratorById(req, res, next) {
+  try {
+    const generator = await Generator.findByIdAndUpdate(
+      req.params.generatorId,
+      {
+        $set: {
+          ...(req.body.radius && { radius: req.body.radius })
+        }
+      },
+      { new: true }
+    );
+    return res.status(200).json(toResponseObj(generator));
+  } catch (err) {
+    return next(err);
+  }
+}
+
+async function deleteGeneratorById(req, res, next) {
+  try {
+    const generator = await Generator.findOneAndDelete({
+      _id: req.params.generatorId,
+      userId: req.params.userId || res.locals.userId
+    });
+
+    if (!generator)
+      return res.status(404).json({ error: "Generator not found" });
+
+    return res.status(204).json();
+  } catch (err) {
+    return next(err);
+  }
+}
 
 async function getNext(req, res, next) {
   try {
@@ -116,5 +144,8 @@ async function getNext(req, res, next) {
 module.exports = {
   getNext,
   getGenerator,
-  createGenerator
+  getGeneratorById,
+  createGenerator,
+  updateGeneratorById,
+  deleteGeneratorById
 };
