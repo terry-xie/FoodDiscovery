@@ -2,9 +2,9 @@ module.exports = {
   openapi: "3.0.0",
   info: {
     version: "1.0.0",
-    title: "Food Genie",
+    title: "Food Discovery",
     description:
-      "Food Genie is a REST API that retrieves restaurant data from Yelp through their API. Try it out by following these simple steps: \n" +
+      "Food Discovery is a REST API that retrieves restaurant data from Yelp through their API. Try it out by following these simple steps: \n" +
       "1. Register a user (POST /user) \n" +
       "2. Login with the newly registered user to obtain a token in the response (POST /session) \n" +
       "3. Use the Authorize button to attach the token to future requests and gain access to all protected routes \n" +
